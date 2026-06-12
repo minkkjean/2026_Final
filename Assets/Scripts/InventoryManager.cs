@@ -12,9 +12,9 @@ public class InventoryManager : MonoBehaviour
     UnityMainThreadDispatcher dispatcher;
 
     [Header("UI")]
-    [SerializeField] Text PotionCountText;
-    [SerializeField] Text BombCountText;
-    [SerializeField] Text TicketCountText;
+    [SerializeField] Text SwordCountText;
+    [SerializeField] Text GunCountText;
+    [SerializeField] Text BowCountText;
     [SerializeField] Text MessageText;
 
     string userKey;
@@ -93,9 +93,9 @@ public class InventoryManager : MonoBehaviour
 
     void RefreshUI()
     {
-        PotionCountText.text = "Potion : " + GetItemCount("Potion");
-        BombCountText.text = "Bomb : " + GetItemCount("Bomb");
-        TicketCountText.text = "Ticket : " + GetItemCount("Ticket");
+        SwordCountText.text = "Sword : " + GetItemCount("Sword");
+        GunCountText.text = "Gun : " + GetItemCount("Gun");
+        BowCountText.text = "Bow : " + GetItemCount("Bow");
     }
 
     void UseItem(string itemName)
@@ -117,17 +117,17 @@ public class InventoryManager : MonoBehaviour
         SaveInventory(itemName);
     }
 
-    public void OnClickUsePotion()
+    public void OnClickUseSword()
     {
-        UseItem("Potion");
+        UseItem("Sword");
     }
-    public void OnClickUseBomb()
+    public void OnClickUseGun()
     {
-        UseItem("Bomb");
+        UseItem("Gun");
     }
-    public void OnClickUseTicket()
+    public void OnClickUseBow()
     {
-        UseItem("Ticket");
+        UseItem("Bow");
     }
 
     void SaveInventory(string userItemname)

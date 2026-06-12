@@ -20,7 +20,7 @@ public class UserData
     public UserData(string nickName)
     {
         NickName = nickName;
-        Coin = 500;
+        Coin = 5000;
         Score = 0;
 
         Dictionary<string, bool> unitList = new Dictionary<string, bool>();
@@ -32,9 +32,9 @@ public class UserData
         }
 
         Dictionary<string, int> inventory = new Dictionary<string, int>();
-        inventory["Potion"] = 0;
-        inventory["Bomb"] = 0;
-        inventory["Ticket"] = 0;
+        inventory["Sword"] = 0;
+        inventory["Gun"] = 0;
+        inventory["Bow"] = 0;
 
         UnitList = JsonConvert.SerializeObject(unitList);
         Inventory = JsonConvert.SerializeObject(inventory);

@@ -2,7 +2,7 @@ using UnityEngine;
 using Firebase.Database;
 using UnityEngine.UI;
 using PimDeWitte.UnityMainThreadDispatcher;
-using Unity.VisualScripting;
+
 public class UserLogin : MonoBehaviour
 {
     FirebaseDatabase database;
@@ -12,7 +12,6 @@ public class UserLogin : MonoBehaviour
     [SerializeField] InputField NickNameInput;
     [SerializeField] Text checkText;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         database = FirebaseDatabase.GetInstance(
@@ -22,6 +21,7 @@ public class UserLogin : MonoBehaviour
         reference = database.RootReference;
         dispatcher = UnityMainThreadDispatcher.Instance();
     }
+
     public void OnClickLogin()
     {
         string nickName = NickNameInput.text.Trim();
@@ -32,42 +32,52 @@ public class UserLogin : MonoBehaviour
             return;
         }
 
-        reference.Child("UserInfo").OrderByChild("NickName").EqualTo(nickName).GetValueAsync().ContinueWith(task =>
+        checkText.text = "로그인 시도 중...";
+
+        reference.Child("UserInfo").GetValueAsync().ContinueWith(task =>
         {
-            if (task.IsFaulted)
+            if (task.IsFaulted || task.IsCanceled)
             {
                 dispatcher.Enqueue(() =>
                 {
-                    checkText.text = " Firebase 읽기 오류";
+                    checkText.text = "Firebase 읽기 오류";
                 });
+                return;
             }
 
             DataSnapshot snapshot = task.Result;
 
-            if (!snapshot.HasChildren)
-            {
-                dispatcher.Enqueue(() =>
-                {
-                    checkText.text = "존재 하지 않는 닉네임 입니다.";
-                });
-                return;
-            }
-            
+            bool found = false;
+
             foreach (DataSnapshot userSnapshot in snapshot.Children)
             {
-                string userKey = userSnapshot.Key;
+                string dbNickName = userSnapshot.Child("NickName").Value.ToString();
+
+                if (dbNickName == nickName)
+                {
+                    found = true;
+
+                    string userKey = userSnapshot.Key;
+
+                    dispatcher.Enqueue(() =>
+                    {
+                        PlayerPrefs.SetString("UserKey", userKey);
+                        PlayerPrefs.SetString("UserNickName", nickName);
+                        PlayerPrefs.Save();
+
+                        checkText.text = "로그인 성공";
+                    });
+
+                    break;
+                }
+            }
+
+            if (!found)
+            {
                 dispatcher.Enqueue(() =>
                 {
-                    PlayerPrefs.SetString("UserKey", userKey);
-                    PlayerPrefs.SetString("UserNickName", nickName);
-                    PlayerPrefs.Save();
-
-                    checkText.text = "로그인 성공";
-
-                    //Scene 이동 처리
+                    checkText.text = "존재하지 않는 닉네임입니다.";
                 });
-
-                break;
             }
         });
     }
