@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1010351169092",
+    "project_id": "finalexam-97889",
+    "storage_bucket": "finalexam-97889.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010351169092:android:3ad5036ffd340cf1e0a611",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.Unity_2026_Final"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvvPuJqgSYACfrs9cP2MuZSS3sEuJkxZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
